@@ -36,11 +36,11 @@ export default function HeroSection({
       >
         {backgroundImage && (
           <div 
-            className="absolute inset-0 bg-cover bg-center opacity-20"
+            className="absolute inset-0 bg-cover bg-center opacity-25"
             style={{ backgroundImage: `url(${backgroundImage})` }}
           />
         )}
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/25 to-black/40" />
       </div>
 
       {/* Content */}

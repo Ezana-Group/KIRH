@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import { Heart, Users, Lightbulb, TrendingUp, ArrowRight, Shield, Sparkles, Target } from 'lucide-react'
+import { Heart, Users, Lightbulb, TrendingUp, ArrowRight, Shield, Sparkles, Target, Phone, CheckCircle } from 'lucide-react'
 import HeroSection from '@/components/ui/HeroSection'
 import ValueCard from '@/components/ui/ValueCard'
 import StatsBlock from '@/components/ui/StatsBlock'
 import CTASection from '@/components/ui/CTASection'
 import InfoSection from '@/components/sections/InfoSection'
+import { siteImages } from '@/lib/images'
 
 export default function Home() {
   const values = [
@@ -67,16 +68,41 @@ export default function Home() {
             </span>
           </h1>
         }
-        subtitle="Delivering compassionate home care, meaningful empowerment, and technology-enabled opportunities for Persons with Disabilities."
+        subtitle="Personalised care, skills training, and community support for Persons with Disabilities—so you or your loved one can live with dignity and independence."
         height="tall"
+        backgroundImage={siteImages.heroCare}
       >
-        <Link href="/get-support" className="bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-          Get Support
-        </Link>
-        <Link href="/partner" className="border-2 border-white text-white hover:bg-white hover:text-primary-600 px-8 py-4 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
-          Partner With Us
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Link href="/get-support" className="inline-flex items-center justify-center gap-2 bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-200 shadow-xl hover:shadow-2xl hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
+            <Heart className="w-5 h-5" aria-hidden="true" />
+            Get Support
+          </Link>
+          <Link href="/partner" className="inline-flex items-center justify-center gap-2 border-2 border-white text-white hover:bg-white hover:text-primary-600 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white">
+            <Users className="w-5 h-5" aria-hidden="true" />
+            Partner With Us
+          </Link>
+        </div>
       </HeroSection>
+
+      {/* Trust strip */}
+      <section className="bg-white border-b border-gray-100 shadow-sm" aria-hidden="true">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 text-sm text-gray-600">
+            <span className="inline-flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 text-primary-600" aria-hidden="true" />
+              <strong>Trusted</strong> by families across Kenya
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Phone className="w-5 h-5 text-primary-600" aria-hidden="true" />
+              <strong>24-hour</strong> response
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Shield className="w-5 h-5 text-primary-600" aria-hidden="true" />
+              <strong>Confidential</strong> & respectful
+            </span>
+          </div>
+        </div>
+      </section>
 
       {/* What We Do */}
       <section className="section-container" aria-labelledby="what-we-do">
@@ -91,8 +117,8 @@ export default function Home() {
             </span>
           </h2>
           <p className="text-lg text-gray-600 leading-relaxed">
-            At Kenya Industrial Research Homes, we blend compassionate care with innovative empowerment 
-            to create environments where everyone can thrive with dignity and independence.
+            From daily living support to skills training and community connection—everything we do is 
+            designed to help you or your loved one live more independently and with confidence.
           </p>
         </div>
 
@@ -147,8 +173,8 @@ export default function Home() {
         subtitle="Our Story"
         title="Creating Environments Where Everyone Thrives"
         description="Kenya Industrial Research Homes was founded on the belief that every person deserves access to compassionate care, meaningful opportunities, and the tools to live independently. Through partnerships with government ministries, disability organizations, and community stakeholders, we've built a comprehensive ecosystem of support that transforms lives."
-        image="/images/about-preview.jpg"
-        imageAlt="KIRH team members working together"
+        image={siteImages.aboutPreview}
+        imageAlt="Diverse team members working together in community"
         imageSide="right"
       >
         <Link 
@@ -174,8 +200,8 @@ export default function Home() {
             {' '}With Us
           </h2>
           <p className="text-lg text-gray-600 leading-relaxed">
-            Whether you're seeking support, want to partner with us, or simply learn more about our work, 
-            we're here to help you take the next step.
+            Join hundreds of families and partners who trust KIRH for care and impact. 
+            Start with a simple form or call—no commitment required.
           </p>
         </div>
 
@@ -232,7 +258,7 @@ export default function Home() {
           </Link>
 
           <Link 
-            href="/contact"
+            href="/get-support"
             className="relative overflow-hidden group"
           >
             <div className="card text-center h-full hover:shadow-2xl transition-all duration-300 group-hover:-translate-y-2 bg-gradient-to-br from-primary-600 to-secondary-600 border-2 border-primary-700">
@@ -240,10 +266,10 @@ export default function Home() {
                 <ArrowRight className="w-10 h-10 text-primary-600" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-display font-bold text-white mb-3">
-                Contact Us Today
+                Get Support Now
               </h3>
               <p className="text-white/90 text-sm leading-relaxed">
-                Start a conversation about your needs
+                Request care or a callback—we respond within 24 hours
               </p>
             </div>
           </Link>
@@ -252,10 +278,10 @@ export default function Home() {
 
       {/* Final CTA */}
       <CTASection
-        title="Transform Lives Through Partnership"
-        description="Through a strong network of partners, supporters, and dedicated professionals, KIRH continues to champion a disability-inclusive society where youth with disabilities are empowered to reach their full potential and lead dignified lives."
-        primaryButton={{ text: 'Get Started', href: '/contact' }}
-        secondaryButton={{ text: 'Learn More', href: '/about' }}
+        title="Ready to Take the Next Step?"
+        description="Whether you need care for yourself or a loved one, or want to partner with us to create impact—our team is here to help. Get a response within 24 hours."
+        primaryButton={{ text: 'Get Support', href: '/get-support' }}
+        secondaryButton={{ text: 'Partner With Us', href: '/partner' }}
       />
     </>
   )

@@ -5,6 +5,7 @@ import TeamCard from '@/components/ui/TeamCard'
 import InfoSection from '@/components/sections/InfoSection'
 import CTASection from '@/components/ui/CTASection'
 import TeamSection from '@/components/sections/TeamSection'
+import { siteImages } from '@/lib/images'
 
 export const metadata = {
   title: 'About Us | Kenya Industrial Research Homes',
@@ -351,6 +352,7 @@ export default function AboutPage() {
         }
         subtitle="Dedicated to creating inclusive environments where compassionate care meets meaningful opportunities, empowering every individual to thrive with dignity and independence."
         height="default"
+        backgroundImage={siteImages.inclusion}
       />
 
       {/* Organization Story */}
@@ -377,8 +379,8 @@ export default function AboutPage() {
             </p>
           </>
         }
-        image="/images/story.jpg"
-        imageAlt="KIRH community gathering"
+        image={siteImages.story}
+        imageAlt="Community gathering and partnership"
         imageSide="right"
       />
 

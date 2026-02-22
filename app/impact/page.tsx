@@ -5,6 +5,7 @@ import StatsBlock from '@/components/ui/StatsBlock'
 import TestimonialCard from '@/components/ui/TestimonialCard'
 import CTASection from '@/components/ui/CTASection'
 import InfoSection from '@/components/sections/InfoSection'
+import { siteImages } from '@/lib/images'
 
 export const metadata = {
   title: 'Our Impact | Kenya Industrial Research Homes',
@@ -118,6 +119,7 @@ export default function ImpactPage() {
         }
         subtitle="Measuring success through transformed lives, achieved goals, and strengthened communities. See the real difference KIRH makes every day."
         height="default"
+        backgroundImage={siteImages.communityImpact}
       />
 
       {/* Main Stats */}
@@ -484,8 +486,8 @@ export default function ImpactPage() {
         subtitle="Lasting Change"
         title="Building a Disability-Inclusive Future"
         description="Beyond individual transformation, KIRH's work contributes to systemic change. Through partnerships with government ministries, the National Council for Persons with Disabilities (NCPWD), County governments, and disability organizations, we're helping build a more inclusive Kenya where persons with disabilities are respected, empowered, and supported to reach their full potential."
-        image="/images/community-impact.jpg"
-        imageAlt="KIRH community event"
+        image={siteImages.communityImpact}
+        imageAlt="Community event and inclusion"
         imageSide="right"
       />
 

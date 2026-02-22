@@ -22,14 +22,44 @@ export default function ContactForm({ defaultType = 'general' }: ContactFormProp
     e.preventDefault()
     setStatus('submitting')
 
-    // Simulate form submission
-    setTimeout(() => {
+    const payload = { formType: 'contact' as const, data: { ...formData } }
+    try {
+      const res = await fetch('/api/send-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const json = await res.json().catch(() => ({}))
+      if (res.ok) {
+        setStatus('success')
+        setFormData({ name: '', email: '', phone: '', type: defaultType, message: '' })
+        setTimeout(() => setStatus('idle'), 3000)
+        return
+      }
+      if (res.status === 503 && json.fallback === 'mailto') {
+        const subject = encodeURIComponent('Contact form – KIRH Website')
+        const body = encodeURIComponent(
+          `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nInquiry: ${formData.type}\n\nMessage:\n${formData.message}`
+        )
+        window.location.href = `mailto:info@kirh.co.ke?subject=${subject}&body=${body}`
+        setStatus('success')
+        setFormData({ name: '', email: '', phone: '', type: defaultType, message: '' })
+        setTimeout(() => setStatus('idle'), 3000)
+        return
+      }
+    } catch {
+      // fallback to mailto on network error
+      const subject = encodeURIComponent('Contact form – KIRH Website')
+      const body = encodeURIComponent(
+        `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nInquiry: ${formData.type}\n\nMessage:\n${formData.message}`
+      )
+      window.location.href = `mailto:info@kirh.co.ke?subject=${subject}&body=${body}`
       setStatus('success')
       setFormData({ name: '', email: '', phone: '', type: defaultType, message: '' })
-      
-      // Reset status after 3 seconds
       setTimeout(() => setStatus('idle'), 3000)
-    }, 1500)
+      return
+    }
+    setStatus('error')
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

@@ -4,6 +4,7 @@ import ServiceCard from '@/components/ui/ServiceCard'
 import ValueCard from '@/components/ui/ValueCard'
 import CTASection from '@/components/ui/CTASection'
 import InfoSection from '@/components/sections/InfoSection'
+import { siteImages } from '@/lib/images'
 
 export const metadata = {
   title: 'Empowerment & Innovation Hub | Kenya Industrial Research Homes',
@@ -178,6 +179,7 @@ export default function EmpowermentPage() {
         }
         subtitle="Empowerment programs that build skills, foster leadership, and create pathways to independence through innovation and community."
         height="default"
+        backgroundImage={siteImages.successStory}
       />
 
       {/* Introduction */}
@@ -294,8 +296,8 @@ export default function EmpowermentPage() {
             </p>
           </>
         }
-        image="/images/success-story.jpg"
-        imageAlt="Program participant working on computer"
+        image={siteImages.successStory}
+        imageAlt="Program participant learning and building skills"
         imageSide="left"
         background="gray"
       />

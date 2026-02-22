@@ -21,6 +21,8 @@ export default function PartnerPage() {
   })
 
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
 
   const partnershipTypes = [
     { id: 'program', label: 'Program Collaboration', icon: '🤝', desc: 'Joint programs and initiatives' },
@@ -42,10 +44,68 @@ export default function PartnerPage() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Partnership Request:', formData)
-    setSubmitted(true)
+    setSubmitting(true)
+    setSubmitError(false)
+    const payload = { formType: 'partner' as const, data: { ...formData } }
+    try {
+      const res = await fetch('/api/send-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const json = await res.json().catch(() => ({}))
+      if (res.ok) {
+        setSubmitted(true)
+        return
+      }
+      if (res.status === 503 && json.fallback === 'mailto') {
+        const subject = encodeURIComponent('Partnership application – KIRH Website')
+        const body = encodeURIComponent(
+          [
+            `Organization: ${formData.organizationName}`,
+            `Type: ${formData.organizationType}`,
+            formData.website && `Website: ${formData.website}`,
+            `Contact: ${formData.contactPerson}`,
+            formData.title && `Title: ${formData.title}`,
+            `Email: ${formData.email}`,
+            `Phone: ${formData.phone}`,
+            `Partnership types: ${formData.partnershipType.join(', ')}`,
+            `Goals: ${formData.partnershipGoals}`,
+            `Timeline: ${formData.timeline}`,
+          ]
+            .filter(Boolean)
+            .join('\n')
+        )
+        window.location.href = `mailto:partner@kirh.co.ke?subject=${subject}&body=${body}`
+        setSubmitted(true)
+        return
+      }
+    } catch {
+      const subject = encodeURIComponent('Partnership application – KIRH Website')
+      const body = encodeURIComponent(
+        [
+          `Organization: ${formData.organizationName}`,
+          `Type: ${formData.organizationType}`,
+          formData.website && `Website: ${formData.website}`,
+          `Contact: ${formData.contactPerson}`,
+          formData.title && `Title: ${formData.title}`,
+          `Email: ${formData.email}`,
+          `Phone: ${formData.phone}`,
+          `Partnership types: ${formData.partnershipType.join(', ')}`,
+          `Goals: ${formData.partnershipGoals}`,
+          `Timeline: ${formData.timeline}`,
+        ]
+          .filter(Boolean)
+          .join('\n')
+      )
+      window.location.href = `mailto:partner@kirh.co.ke?subject=${subject}&body=${body}`
+      setSubmitted(true)
+      return
+    }
+    setSubmitError(true)
+    setSubmitting(false)
   }
 
   const canProceedToStep2 = formData.organizationName && formData.contactPerson && formData.email && formData.phone
@@ -458,19 +518,24 @@ export default function PartnerPage() {
                   </p>
                 </div>
 
+                {submitError && (
+                  <p className="text-red-600 text-sm">Something went wrong. Your default email client will open so you can send the application to partner@kirh.co.ke.</p>
+                )}
                 <div className="flex gap-4">
                   <button
                     type="button"
                     onClick={() => setStep(2)}
                     className="btn-outline flex-1 py-4"
+                    disabled={submitting}
                   >
                     Back
                   </button>
                   <button
                     type="submit"
-                    className="btn-primary flex-1 py-4 text-lg font-bold"
+                    disabled={submitting}
+                    className="btn-primary flex-1 py-4 text-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Submit Application
+                    {submitting ? 'Sending...' : 'Submit Application'}
                   </button>
                 </div>
               </div>

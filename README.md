@@ -100,6 +100,10 @@ npm run build
 npm start
 ```
 
+### Deploying to cPanel
+
+See **[DEPLOY-CPANEL.md](DEPLOY-CPANEL.md)** for step-by-step instructions to deploy this project to cPanel (GitHub clone or upload + Node.js app setup).
+
 ## 📁 Project Structure
 
 ```

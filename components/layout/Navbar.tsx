@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { Menu, X, Phone } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -15,7 +16,13 @@ const navigation = [
   { name: 'Contact', href: '/contact' },
 ]
 
+function isActivePath(pathname: string, href: string): boolean {
+  if (href === '/') return pathname === '/'
+  return pathname === href || pathname.startsWith(href + '/')
+}
+
 export default function Navbar() {
+  const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -64,15 +71,23 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="px-4 py-2 rounded-lg text-gray-700 hover:text-primary-600 hover:bg-primary-50 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              const isActive = isActivePath(pathname ?? '', item.href)
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                    isActive
+                      ? 'text-primary-600 bg-primary-50 border-b-2 border-primary-600'
+                      : 'text-gray-700 hover:text-primary-600 hover:bg-primary-50'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              )
+            })}
           </div>
 
           {/* CTA Buttons */}
@@ -120,16 +135,24 @@ export default function Navbar() {
               className="lg:hidden overflow-hidden"
             >
               <div className="py-4 space-y-2 border-t border-gray-200">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="block px-4 py-3 rounded-lg text-gray-700 hover:text-primary-600 hover:bg-primary-50 font-medium transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+                {navigation.map((item) => {
+                  const isActive = isActivePath(pathname ?? '', item.href)
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      aria-current={isActive ? 'page' : undefined}
+                      className={`block px-4 py-3 rounded-lg font-medium transition-colors ${
+                        isActive
+                          ? 'text-primary-600 bg-primary-100 border-l-4 border-primary-600'
+                          : 'text-gray-700 hover:text-primary-600 hover:bg-primary-50'
+                      }`}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  )
+                })}
                 <div className="pt-4 space-y-2">
                   <Link
                     href="/get-support"

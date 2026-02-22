@@ -195,6 +195,19 @@ export default function Footer() {
               ))}
             </div>
           </div>
+          <div className="mt-6 pt-6 border-t border-gray-800 text-center">
+            <p className="text-sm text-gray-500">
+              Design and built by{' '}
+              <a
+                href="https://www.ovid.co.ke"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-primary-400 font-medium transition-colors focus:outline-none focus:underline focus:text-primary-400"
+              >
+                Ovid International Ltd
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

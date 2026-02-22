@@ -26,28 +26,37 @@ export default function CTASection({
   background = 'gradient'
 }: CTASectionProps) {
   const backgrounds = {
-    gradient: 'bg-gradient-to-br from-primary-600 to-secondary-600 text-white',
+    gradient: 'bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-700 text-white relative overflow-hidden',
     light: 'bg-gray-50 text-gray-900',
     dark: 'bg-gray-900 text-white'
   }
 
+  const isDark = background === 'gradient' || background === 'dark'
+
   return (
-    <section className={`${backgrounds[background]} py-16 md:py-20`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className={`${backgrounds[background]} py-20 md:py-24`}>
+      {/* Subtle pattern overlay for gradient */}
+      {background === 'gradient' && (
+        <div className="absolute inset-0 opacity-10" aria-hidden="true">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+            backgroundSize: '32px 32px'
+          }} />
+        </div>
+      )}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto text-center"
+          className="max-w-3xl mx-auto text-center"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-6 leading-tight">
             {title}
           </h2>
-          <p className={`text-lg md:text-xl mb-8 ${
-            background === 'gradient' || background === 'dark' 
-              ? 'text-white/90' 
-              : 'text-gray-600'
+          <p className={`text-lg md:text-xl mb-10 leading-relaxed ${
+            isDark ? 'text-white/95' : 'text-gray-600'
           }`}>
             {description}
           </p>
@@ -58,10 +67,10 @@ export default function CTASection({
                 <Link
                   href={primaryButton.href}
                   className={`${
-                    background === 'gradient' || background === 'dark'
+                    isDark
                       ? 'bg-white text-primary-600 hover:bg-gray-100'
                       : 'btn-primary'
-                  } px-8 py-4 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500`}
+                  } inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-200 shadow-xl hover:shadow-2xl hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500`}
                 >
                   {primaryButton.text}
                 </Link>
@@ -70,10 +79,10 @@ export default function CTASection({
                 <Link
                   href={secondaryButton.href}
                   className={`${
-                    background === 'gradient' || background === 'dark'
+                    isDark
                       ? 'border-2 border-white text-white hover:bg-white hover:text-primary-600'
                       : 'btn-outline'
-                  } px-8 py-4 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500`}
+                  } inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500`}
                 >
                   {secondaryButton.text}
                 </Link>

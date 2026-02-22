@@ -20,6 +20,8 @@ export default function GetSupportPage() {
   })
 
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
 
   const supportTypes = [
     { id: 'personal-care', label: 'Personal Care & Daily Living', icon: '🛁' },
@@ -41,10 +43,66 @@ export default function GetSupportPage() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Support Request:', formData)
-    setSubmitted(true)
+    setSubmitting(true)
+    setSubmitError(false)
+    const payload = { formType: 'get-support' as const, data: { ...formData } }
+    try {
+      const res = await fetch('/api/send-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const json = await res.json().catch(() => ({}))
+      if (res.ok) {
+        setSubmitted(true)
+        return
+      }
+      if (res.status === 503 && json.fallback === 'mailto') {
+        const subject = encodeURIComponent('Get Support request – KIRH Website')
+        const body = encodeURIComponent(
+          [
+            `Who needs support: ${formData.clientName}`,
+            formData.contactName && `Contact name: ${formData.contactName}`,
+            `Email: ${formData.email}`,
+            `Phone: ${formData.phone}`,
+            `Address: ${formData.address}`,
+            `Support needed: ${formData.supportNeeded.join(', ')}`,
+            `Urgency: ${formData.urgency}`,
+            `Preferred contact: ${formData.preferredContact}`,
+            formData.message && `Message: ${formData.message}`,
+          ]
+            .filter(Boolean)
+            .join('\n')
+        )
+        window.location.href = `mailto:support@kirh.co.ke?subject=${subject}&body=${body}`
+        setSubmitted(true)
+        return
+      }
+    } catch {
+      const subject = encodeURIComponent('Get Support request – KIRH Website')
+      const body = encodeURIComponent(
+        [
+          `Who needs support: ${formData.clientName}`,
+          formData.contactName && `Contact name: ${formData.contactName}`,
+          `Email: ${formData.email}`,
+          `Phone: ${formData.phone}`,
+          `Address: ${formData.address}`,
+          `Support needed: ${formData.supportNeeded.join(', ')}`,
+          `Urgency: ${formData.urgency}`,
+          `Preferred contact: ${formData.preferredContact}`,
+          formData.message && `Message: ${formData.message}`,
+        ]
+          .filter(Boolean)
+          .join('\n')
+      )
+      window.location.href = `mailto:support@kirh.co.ke?subject=${subject}&body=${body}`
+      setSubmitted(true)
+      return
+    }
+    setSubmitError(true)
+    setSubmitting(false)
   }
 
   const canProceedToStep2 = formData.clientName && formData.email && formData.phone
@@ -414,19 +472,24 @@ export default function GetSupportPage() {
                   </p>
                 </div>
 
+                {submitError && (
+                  <p className="text-red-600 text-sm">Something went wrong. Your default email client will open so you can send the request to support@kirh.co.ke.</p>
+                )}
                 <div className="flex gap-4">
                   <button
                     type="button"
                     onClick={() => setStep(2)}
                     className="btn-outline flex-1 py-4"
+                    disabled={submitting}
                   >
                     Back
                   </button>
                   <button
                     type="submit"
-                    className="btn-primary flex-1 py-4 text-lg font-bold"
+                    disabled={submitting}
+                    className="btn-primary flex-1 py-4 text-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Submit Request
+                    {submitting ? 'Sending...' : 'Submit Request'}
                   </button>
                 </div>
               </div>

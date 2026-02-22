@@ -72,11 +72,14 @@ export default function InfoSection({
                 imageSide === 'left' ? 'md:order-1' : ''
               }`}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-400/20 to-secondary-400/20" />
-              {/* Placeholder for image */}
-              <div className="w-full h-full bg-gradient-to-br from-primary-200 to-secondary-200 flex items-center justify-center">
-                <p className="text-primary-700 font-medium">{imageAlt || 'Image'}</p>
-              </div>
+              <Image
+                src={image}
+                alt={imageAlt || 'Image'}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-900/10 to-secondary-900/10 pointer-events-none" />
             </motion.div>
           )}
         </div>
