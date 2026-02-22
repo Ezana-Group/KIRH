@@ -41,11 +41,15 @@ This guide covers deploying the Next.js app to a cPanel host with Node.js suppor
 
 6. **Start command**
    - Application startup file / run script: set to **Start** the app.
-   - Typical command:
+   - **If cPanel asks for a startup file**, use the project’s **`server.js`** (in the app root):
+   ```bash
+   node server.js
+   ```
+   - Otherwise use either:
    ```bash
    npm start
    ```
-   - Or, if your host expects a single file: `node node_modules/next/dist/bin/next start` (with correct working directory).
+   - Or: `node node_modules/next/dist/bin/next start` (with working directory = app root).
 
 7. **Port and URL**
    - Note the port cPanel assigns (e.g. 3000 or a random port). Point your domain to this app (cPanel usually has “Add port” or “Connect domain to app”).

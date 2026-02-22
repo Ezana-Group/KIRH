@@ -41,6 +41,3 @@ next-env.d.ts
 # Testing
 coverage/
 .nyc_output/
-
-# Static site (lives on Static branch only)
-Static/
