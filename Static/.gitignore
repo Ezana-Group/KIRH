@@ -1,5 +1,0 @@
-# Next.js build artifacts (not needed for static cPanel deploy)
-_next/
-static/
-__next*
-*.txt
